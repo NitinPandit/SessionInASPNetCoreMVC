@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table>
+    <tr>
+        <td>Id</td>
+        <td><input type="number" id="EmpId" /></td>
+    </tr>
+
+    <tr>
+        <td>Name</td>
+        <td><input type="text" id="EmpName" /></td>
+    </tr>
+    <tr>
+        <td>Salary</td>
+        <td><input type="number" id="EmpSalary" /></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Add this" id="btnAdd" /></td>
+    </tr>
+</table>
+
+<div id="employeesList">
+</div>
+
+@section Scripts{
+
+<script>
+            $(document).ready(function(){
+                $("#btnAdd").click(function(){
+
+                    var empId=$("#EmpId").val();
+                    var empName=$("#EmpName").val();
+                    var empSalary=$("#EmpSalary").val();
+
+                    $.ajax({
+                        url:"/home/addnew",
+                        data:{Id:empId,Name:empName,Salary:empSalary },
+                        method:"post",
+                        success:function(response){
+                            console.log(response);
+
+                            var html="<ul>"
+
+                            $.each(response, function(index, value) {
+                                console.log(value.name);
+                                 html+="<li>"+value.name+"</li>"
+                            });
+
+                            html+="</ul>"
+
+                            $("#employeesList").html(html);
+
+                        },
+                        error:function(error)
+                        {
+                            console.log(error);
+                        }
+                    })
+
+                });
+            })
+</script>
+}
